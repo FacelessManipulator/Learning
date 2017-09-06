@@ -12,7 +12,8 @@ This means draw x from 2 to 10 (list ranges: [1..10]) which satisfy the followin
 `[(x,y) | x <- [1..5], y <- [1..5], odd x, odd y]`  
 List comprehension could also draw elements within several lists. The result is the Cartesian product (笛卡尔积) of these sets after filtered.  
  
-```take 100 [x|x<-[2..],length [s|s<-[2..x-1],(x `mod` s)/=0] + 2 == x]
+```
+take 100 [x|x<-[2..],length [s|s<-[2..x-1],(x `mod` s)/=0] + 2 == x]
 ```  
 This line take the top 100 prime from an infinite prime list.
 
@@ -64,5 +65,23 @@ case expression of pattern -> result
 				   pattern -> result 
 ```
 
+### Map filter foldl lambda takeWhile
+They are similar to Python. Foldl is another form of reduce.
+```
+map (*3) [0..10]
+filter (\x->x*2<4) [0..10]
+foldl (+) 0 [1..10]
+takeWhile (<10000) [1..]
+```
 
+### Sugars
+- `$` is a function application with lowest precedence. The using of it could saving parentheses. `sum $ map sqrt [1..100]` is equivalent to	`sum (map sqrt [1..100])`i  
+- `takeWhile (\=10) [1..11]` return the element until the predicate get false.  
+- `length . map (+4)  - (.) :: (b -> c) -> (a -> b) -> a -> c`  `.` could composing two functions.
 
+- `find (>4) [1..4]` Return the first value wrapped by `Maybe` fullfilling the predicate or nothing. With this predicate I can improve the effciency of my prime funcion.  
+```
+take 100 [x|x<-[2..],find (\a->x `mod` a == 0) [2..x-1] == Nothing]
+```  
+
+- ``
